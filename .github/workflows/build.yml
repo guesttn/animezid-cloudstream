@@ -1,0 +1,26 @@
+name: Build CS3
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Build Plugins
+        run: |
+          chmod +x gradlew
+          ./gradlew make
+      - name: Push to repo
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: build/repos/
+          branch: builds
+          clean: true
