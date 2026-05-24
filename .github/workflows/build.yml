@@ -16,14 +16,17 @@ jobs:
           java-version: '17'
       - name: Build Plugins
         run: |
-          git clone https://github.com/recloudstream/cloudstream-extensions-template.git template
+          git clone https://github.com/recloudstream/cloudstream-extensions-template.git template --depth 1
           cp -r AnimeZidProvider template/
           cd template
           chmod +x gradlew
           ./gradlew make
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Push to repo
         uses: JamesIves/github-pages-deploy-action@v4
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           folder: template/build/repos/
           branch: builds
           clean: true
